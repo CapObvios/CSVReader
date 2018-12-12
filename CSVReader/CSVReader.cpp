@@ -1,14 +1,14 @@
 #include "csvreader.h"
 
-unordered_map<string, unordered_set<string>> readCSV(const string& fname, const char& delimiter)
+unordered_map<string, vector<string>> readCSV(const string& fname, const char& delimiter)
 {
-	unordered_map<string, unordered_set<string>> result;
+	unordered_map<string, vector<string>> result;
 
 	ifstream ifs;
 	ifs.open(fname);
 
 	//for now just return an empty dict
-	if (!ifs.is_open()) return unordered_map<string, unordered_set<string>>();
+	if (!ifs.is_open()) return unordered_map<string, vector<string>>();
 
 	//identify headers and initialize a dict
 	string headers;
@@ -36,11 +36,11 @@ unordered_map<string, unordered_set<string>> readCSV(const string& fname, const 
 			if (curHeader++ >= headerCount) break;
 			string value;
 			getline(ifs, value, delimiter);
-			result[k.first].insert(value);
+			result[k.first].push_back(value);
 		}
 		//the last column
 		string value; ifs >> value;
-		result[headers].insert(value);
+		result[headers].push_back(value);
 	}
 
 	return result;
